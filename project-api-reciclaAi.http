@@ -1,0 +1,6 @@
+@project_api_reciclaAi_HostAddress = http://localhost:5245
+
+GET {{project_api_reciclaAi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
