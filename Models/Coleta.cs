@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_api_reciclaAi.Models
@@ -31,6 +32,8 @@ namespace project_api_reciclaAi.Models
         [ForeignKey(nameof(SolicitacaoId))]
         public virtual Solicitacao? Solicitacao { get; set; }
 
-        public virtual ICollection<ColetaTipoMaterial> ColetaTipoMaterials { get; set; } = [];
+        public virtual ICollection<ColetaTipoMaterial> TiposMaterial { get; set; } = [];
+
+        public virtual ICollection<Avaliacao> Avaliacoes { get; set; } = [];
     }
 }

@@ -16,16 +16,16 @@ namespace project_api_reciclaAi.Models
         [Column("observacao")]
         public string? Observacao { get; set; }
 
-        [Column("cliente_id")]
-        public int ClienteId { get; set; }
-
-        [ForeignKey(nameof(ClienteId))]
-        public virtual Cliente? Cliente { get; set; }
-
         [Column("coleta_id")]
         public int ColetaId { get; set; }
 
         [ForeignKey(nameof(ColetaId))]
         public virtual Coleta? Coleta { get; set; }
+
+        [Column("cliente_id")]
+        public int ClienteId { get; set; }
+
+        [ForeignKey(nameof(ClienteId))]
+        public virtual Cliente? Cliente { get; set; }
     }
 }
