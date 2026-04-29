@@ -7,9 +7,6 @@ namespace project_api_reciclaAi.DataContexts
     {
         public ReciclaAIContext(DbContextOptions<ReciclaAIContext> options) : base(options) { }
 
-        // =============================================
-        // DbSets — um por tabela do banco
-        // =============================================
         public DbSet<TipoUsuario> TiposUsuario { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
         public DbSet<TipoMaterial> TiposMaterial { get; set; }
@@ -29,9 +26,6 @@ namespace project_api_reciclaAi.DataContexts
         {
             base.OnModelCreating(modelBuilder);
 
-            // =============================================
-            // TipoUsuario
-            // =============================================
             modelBuilder.Entity<TipoUsuario>(entity =>
             {
                 entity.ToTable("TipoUsuario");
@@ -45,9 +39,6 @@ namespace project_api_reciclaAi.DataContexts
                     .IsRequired();
             });
 
-            // =============================================
-            // Endereco
-            // =============================================
             modelBuilder.Entity<Endereco>(entity =>
             {
                 entity.ToTable("Endereco");
@@ -63,9 +54,6 @@ namespace project_api_reciclaAi.DataContexts
                 entity.Property(e => e.Observacao).HasColumnType("TEXT");
             });
 
-            // =============================================
-            // TipoMaterial
-            // =============================================
             modelBuilder.Entity<TipoMaterial>(entity =>
             {
                 entity.ToTable("TipoMaterial");
@@ -78,9 +66,6 @@ namespace project_api_reciclaAi.DataContexts
                 entity.Property(e => e.AtualizadoEm).IsRequired();
             });
 
-            // =============================================
-            // Empresa
-            // =============================================
             modelBuilder.Entity<Empresa>(entity =>
             {
                 entity.ToTable("Empresa");
@@ -102,9 +87,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // =============================================
-            // EquipeColeta
-            // =============================================
             modelBuilder.Entity<EquipeColeta>(entity =>
             {
                 entity.ToTable("EquipeColeta");
@@ -119,9 +101,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // =============================================
-            // Cliente
-            // =============================================
             modelBuilder.Entity<Cliente>(entity =>
             {
                 entity.ToTable("Cliente");
@@ -145,9 +124,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // =============================================
-            // ClienteEndereco — tabela de junção N:N
-            // =============================================
             modelBuilder.Entity<ClienteEndereco>(entity =>
             {
                 entity.ToTable("ClienteEndereco");
@@ -164,9 +140,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // =============================================
-            // Catador
-            // =============================================
             modelBuilder.Entity<Catador>(entity =>
             {
                 entity.ToTable("Catador");
@@ -193,9 +166,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // =============================================
-            // Solicitacao
-            // =============================================
             modelBuilder.Entity<Solicitacao>(entity =>
             {
                 entity.ToTable("Solicitacao");
@@ -233,9 +203,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.SetNull);
             });
 
-            // =============================================
-            // SolicitacaoTipoMaterial — tabela de junção N:N
-            // =============================================
             modelBuilder.Entity<SolicitacaoTipoMaterial>(entity =>
             {
                 entity.ToTable("SolicitacaoTipoMaterial");
@@ -256,9 +223,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // =============================================
-            // Foto
-            // =============================================
             modelBuilder.Entity<Foto>(entity =>
             {
                 entity.ToTable("Foto");
@@ -272,9 +236,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // =============================================
-            // Coleta
-            // =============================================
             modelBuilder.Entity<Coleta>(entity =>
             {
                 entity.ToTable("Coleta");
@@ -294,9 +255,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // =============================================
-            // Avaliacao
-            // =============================================
             modelBuilder.Entity<Avaliacao>(entity =>
             {
                 entity.ToTable("Avaliacao");
@@ -316,9 +274,6 @@ namespace project_api_reciclaAi.DataContexts
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // =============================================
-            // ColetaTipoMaterial — tabela de junção N:N
-            // =============================================
             modelBuilder.Entity<ColetaTipoMaterial>(entity =>
             {
                 entity.ToTable("ColetaTipoMaterial");
