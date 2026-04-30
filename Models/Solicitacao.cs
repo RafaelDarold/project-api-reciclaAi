@@ -47,10 +47,10 @@ namespace project_api_reciclaAi.Models
         [ForeignKey(nameof(CatadorId))]
         public virtual Catador? Catador { get; set; }
 
-        public virtual ICollection<Foto> Fotos { get; set; } = [];
+        public virtual ICollection<Foto> Foto { get; set; } = [];
 
-        public virtual ICollection<SolicitacaoTipoMaterial> TiposMaterial { get; set; } = [];
+        public virtual ICollection<SolicitacaoTipoMaterial> TipoMaterial { get; set; } = [];
 
-        public virtual ICollection<Coleta> Coletas { get; set; } = [];
+        public virtual ICollection<Coleta> Coleta { get; set; } = [];
     }
 }

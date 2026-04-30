@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_api_reciclaAi.Models
 {
-    [Table("TipoMaterial")]
+    [Table("Tipo_Material")]
     public class TipoMaterial
     {
         [Key]
@@ -26,8 +26,8 @@ namespace project_api_reciclaAi.Models
         [Column("atualizadoEm")]
         public DateTime AtualizadoEm { get; set; }
 
-        public virtual ICollection<SolicitacaoTipoMaterial> SolicitacoesMaterial { get; set; } = [];
+        public virtual ICollection<SolicitacaoTipoMaterial> SolicitacaoMaterial { get; set; } = [];
 
-        public virtual ICollection<ColetaTipoMaterial> ColetasMaterial { get; set; } = [];
+        public virtual ICollection<ColetaTipoMaterial> ColetaMaterial { get; set; } = [];
     }
 }

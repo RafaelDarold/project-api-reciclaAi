@@ -19,13 +19,13 @@ namespace project_api_reciclaAi.Services.TipoUsuario
 
         public async Task<List<TipoUsuarioResponseDto>> GetAllAsync()
         {
-            var tipos = await _context.TiposUsuario.ToListAsync();
+            var tipos = await _context.TipoUsuario.ToListAsync();
             return _mapper.Map<List<TipoUsuarioResponseDto>>(tipos);
         }
 
         public async Task<TipoUsuarioResponseDto> GetByIdAsync(int id)
         {
-            var tipo = await _context.TiposUsuario.FindAsync(id)
+            var tipo = await _context.TipoUsuario.FindAsync(id)
                 ?? throw new NotFoundException($"Tipo de usuário com id {id} não encontrado.");
 
             return _mapper.Map<TipoUsuarioResponseDto>(tipo);

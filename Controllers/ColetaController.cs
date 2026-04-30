@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.Coleta;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/coletas")]
+    [Route("/coleta")]
     [ApiController]
     public class ColetaController : ControllerBase
     {

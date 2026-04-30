@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_api_reciclaAi.Models
 {
-    [Table("TipoUsuario")]
+    [Table("Tipo_Usuario")]
     public class TipoUsuario
     {
         [Key]
@@ -16,10 +16,10 @@ namespace project_api_reciclaAi.Models
         [Column("nivel_acesso")]
         public int NivelAcesso { get; set; }
 
-        public virtual ICollection<Cliente> Clientes { get; set; } = [];
+        public virtual ICollection<Cliente> Cliente { get; set; } = [];
 
-        public virtual ICollection<Empresa> Empresas { get; set; } = [];
+        public virtual ICollection<Empresa> Empresa { get; set; } = [];
 
-        public virtual ICollection<Catador> Catadores { get; set; } = [];
+        public virtual ICollection<Catador> Catador { get; set; } = [];
     }
 }

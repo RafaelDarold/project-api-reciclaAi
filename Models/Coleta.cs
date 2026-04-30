@@ -32,8 +32,8 @@ namespace project_api_reciclaAi.Models
         [ForeignKey(nameof(SolicitacaoId))]
         public virtual Solicitacao? Solicitacao { get; set; }
 
-        public virtual ICollection<ColetaTipoMaterial> TiposMaterial { get; set; } = [];
+        public virtual ICollection<ColetaTipoMaterial> TipoMaterial { get; set; } = [];
 
-        public virtual ICollection<Avaliacao> Avaliacoes { get; set; } = [];
+        public virtual ICollection<Avaliacao> Avaliacao { get; set; } = [];
     }
 }

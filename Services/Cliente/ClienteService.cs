@@ -20,9 +20,9 @@ namespace project_api_reciclaAi.Services.Cliente
 
         public async Task<List<ClienteResponseDto>> GetAllAsync()
         {
-            var clientes = await _context.Clientes
+            var clientes = await _context.Cliente
                 .Include(c => c.TipoUsuario)
-                .Include(c => c.Enderecos)
+                .Include(c => c.Endereco)
                     .ThenInclude(ce => ce.Endereco)
                 .ToListAsync();
 
@@ -31,9 +31,9 @@ namespace project_api_reciclaAi.Services.Cliente
 
         public async Task<ClienteResponseDto> GetByIdAsync(int id)
         {
-            var cliente = await _context.Clientes
+            var cliente = await _context.Cliente
                 .Include(c => c.TipoUsuario)
-                .Include(c => c.Enderecos)
+                .Include(c => c.Endereco)
                     .ThenInclude(ce => ce.Endereco)
                 .FirstOrDefaultAsync(c => c.Id == id)
                 ?? throw new NotFoundException($"Cliente com id {id} não encontrado.");
@@ -43,12 +43,12 @@ namespace project_api_reciclaAi.Services.Cliente
 
         public async Task<ClienteResponseDto> CreateAsync(ClienteRequestDto dto)
         {
-            var emailExiste = await _context.Clientes
+            var emailExiste = await _context.Cliente
                 .AnyAsync(c => c.Email == dto.Email);
             if (emailExiste)
                 throw new ConflictException("Já existe um cliente cadastrado com este e-mail.");
 
-            var cpfCnpjExiste = await _context.Clientes
+            var cpfCnpjExiste = await _context.Cliente
                 .AnyAsync(c => c.CpfCnpj == dto.CpfCnpj);
             if (cpfCnpjExiste)
                 throw new ConflictException("Já existe um cliente cadastrado com este CPF/CNPJ.");
@@ -57,13 +57,13 @@ namespace project_api_reciclaAi.Services.Cliente
             cliente.Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha);
 
             var endereco = _mapper.Map<Endereco>(dto.Endereco);
-            _context.Enderecos.Add(endereco);
+            _context.Endereco.Add(endereco);
             await _context.SaveChangesAsync();
 
-            _context.Clientes.Add(cliente);
+            _context.Cliente.Add(cliente);
             await _context.SaveChangesAsync();
 
-            _context.ClientesEndereco.Add(new ClienteEndereco
+            _context.ClienteEndereco.Add(new ClienteEndereco
             {
                 ClienteId = cliente.Id,
                 EnderecoId = endereco.Id
@@ -75,12 +75,12 @@ namespace project_api_reciclaAi.Services.Cliente
 
         public async Task<ClienteResponseDto> UpdateAsync(int id, ClienteUpdateDto dto)
         {
-            var cliente = await _context.Clientes.FindAsync(id)
+            var cliente = await _context.Cliente.FindAsync(id)
                 ?? throw new NotFoundException($"Cliente com id {id} não encontrado.");
 
             if (dto.Email != null && dto.Email != cliente.Email)
             {
-                var emailExiste = await _context.Clientes
+                var emailExiste = await _context.Cliente
                     .AnyAsync(c => c.Email == dto.Email);
                 if (emailExiste)
                     throw new ConflictException("Já existe um cliente cadastrado com este e-mail.");
@@ -94,10 +94,10 @@ namespace project_api_reciclaAi.Services.Cliente
 
         public async Task DeleteAsync(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id)
+            var cliente = await _context.Cliente.FindAsync(id)
                 ?? throw new NotFoundException($"Cliente com id {id} não encontrado.");
 
-            _context.Clientes.Remove(cliente);
+            _context.Cliente.Remove(cliente);
             await _context.SaveChangesAsync();
         }
     }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_api_reciclaAi.Models
 {
-    [Table("EquipeColeta")]
+    [Table("Equipe_Coleta")]
     public class EquipeColeta
     {
         [Key]
@@ -22,8 +22,8 @@ namespace project_api_reciclaAi.Models
         [ForeignKey(nameof(EmpresaId))]
         public virtual Empresa? Empresa { get; set; }
 
-        public virtual ICollection<Catador> Catadores { get; set; } = [];
+        public virtual ICollection<Catador> Catador { get; set; } = [];
 
-        public virtual ICollection<Solicitacao> Solicitacoes { get; set; } = [];
+        public virtual ICollection<Solicitacao> Solicitacao { get; set; } = [];
     }
 }

@@ -34,8 +34,8 @@ namespace project_api_reciclaAi.Models
         [Column("observacao")]
         public string? Observacao { get; set; }
 
-        public virtual ICollection<ClienteEndereco> ClientesEndereco { get; set; } = [];
+        public virtual ICollection<ClienteEndereco> ClienteEndereco { get; set; } = [];
 
-        public virtual ICollection<Solicitacao> Solicitacoes { get; set; } = [];
+        public virtual ICollection<Solicitacao> Solicitacao { get; set; } = [];
     }
 }

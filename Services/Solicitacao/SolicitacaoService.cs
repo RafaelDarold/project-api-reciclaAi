@@ -20,13 +20,13 @@ namespace project_api_reciclaAi.Services.Solicitacao
 
         private IQueryable<Models.Solicitacao> QueryComIncludes()
         {
-            return _context.Solicitacoes
+            return _context.Solicitacao
                 .Include(s => s.Cliente).ThenInclude(c => c!.TipoUsuario)
-                .Include(s => s.Cliente).ThenInclude(c => c!.Enderecos).ThenInclude(ce => ce.Endereco)
+                .Include(s => s.Cliente).ThenInclude(c => c!.Endereco).ThenInclude(ce => ce.Endereco)
                 .Include(s => s.Endereco)
                 .Include(s => s.EquipeColeta).ThenInclude(eq => eq!.Empresa)
                 .Include(s => s.Catador).ThenInclude(c => c!.TipoUsuario)
-                .Include(s => s.TiposMaterial);
+                .Include(s => s.TipoMaterial);
         }
 
         public async Task<List<SolicitacaoResponseDto>> GetAllAsync()
@@ -46,7 +46,7 @@ namespace project_api_reciclaAi.Services.Solicitacao
 
         public async Task<List<SolicitacaoResponseDto>> GetByClienteAsync(int clienteId)
         {
-            var clienteExiste = await _context.Clientes.AnyAsync(c => c.Id == clienteId);
+            var clienteExiste = await _context.Cliente.AnyAsync(c => c.Id == clienteId);
             if (!clienteExiste)
                 throw new NotFoundException($"Cliente com id {clienteId} não encontrado.");
 
@@ -59,22 +59,22 @@ namespace project_api_reciclaAi.Services.Solicitacao
 
         public async Task<SolicitacaoResponseDto> CreateAsync(SolicitacaoRequestDto dto)
         {
-            var clienteExiste = await _context.Clientes.AnyAsync(c => c.Id == dto.ClienteId);
+            var clienteExiste = await _context.Cliente.AnyAsync(c => c.Id == dto.ClienteId);
             if (!clienteExiste)
                 throw new NotFoundException($"Cliente com id {dto.ClienteId} não encontrado.");
 
-            var enderecoExiste = await _context.Enderecos.AnyAsync(e => e.Id == dto.EnderecoId);
+            var enderecoExiste = await _context.Endereco.AnyAsync(e => e.Id == dto.EnderecoId);
             if (!enderecoExiste)
                 throw new NotFoundException($"Endereço com id {dto.EnderecoId} não encontrado.");
 
             var solicitacao = _mapper.Map<Models.Solicitacao>(dto);
 
-            _context.Solicitacoes.Add(solicitacao);
+            _context.Solicitacao.Add(solicitacao);
             await _context.SaveChangesAsync();
 
             foreach (var material in dto.TiposMaterial)
             {
-                _context.SolicitacoesTipoMaterial.Add(new SolicitacaoTipoMaterial
+                _context.SolicitacaoTipoMaterial.Add(new SolicitacaoTipoMaterial
                 {
                     SolicitacaoId = solicitacao.Id,
                     TipoMaterialId = material.TipoMaterialId,
@@ -88,7 +88,7 @@ namespace project_api_reciclaAi.Services.Solicitacao
 
         public async Task<SolicitacaoResponseDto> UpdateStatusAsync(int id, SolicitacaoStatusUpdateDto dto)
         {
-            var solicitacao = await _context.Solicitacoes.FindAsync(id)
+            var solicitacao = await _context.Solicitacao.FindAsync(id)
                 ?? throw new NotFoundException($"Solicitação com id {id} não encontrada.");
 
             if (solicitacao.Status == "concluída" || solicitacao.Status == "cancelada")
@@ -102,10 +102,10 @@ namespace project_api_reciclaAi.Services.Solicitacao
 
         public async Task<SolicitacaoResponseDto> AtribuirEquipeAsync(int id, int equipeId)
         {
-            var solicitacao = await _context.Solicitacoes.FindAsync(id)
+            var solicitacao = await _context.Solicitacao.FindAsync(id)
                 ?? throw new NotFoundException($"Solicitação com id {id} não encontrada.");
 
-            var equipe = await _context.EquipesColeta.FindAsync(equipeId)
+            var equipe = await _context.EquipeColeta.FindAsync(equipeId)
                 ?? throw new NotFoundException($"Equipe com id {equipeId} não encontrada.");
 
             if (equipe.Status != "ativa")
@@ -120,13 +120,13 @@ namespace project_api_reciclaAi.Services.Solicitacao
 
         public async Task DeleteAsync(int id)
         {
-            var solicitacao = await _context.Solicitacoes.FindAsync(id)
+            var solicitacao = await _context.Solicitacao.FindAsync(id)
                 ?? throw new NotFoundException($"Solicitação com id {id} não encontrada.");
 
             if (solicitacao.Status == "em andamento" || solicitacao.Status == "concluída")
                 throw new BusinessException("Não é possível excluir uma solicitação em andamento ou concluída.");
 
-            _context.Solicitacoes.Remove(solicitacao);
+            _context.Solicitacao.Remove(solicitacao);
             await _context.SaveChangesAsync();
         }
     }

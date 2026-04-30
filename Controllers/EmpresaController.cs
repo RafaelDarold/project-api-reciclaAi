@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.Empresa;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/empresas")]
+    [Route("/empresa")]
     [ApiController]
     public class EmpresaController : ControllerBase
     {

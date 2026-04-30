@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.TipoMaterial;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/tipos-material")]
+    [Route("/tipo-material")]
     [ApiController]
     public class TipoMaterialController : ControllerBase
     {

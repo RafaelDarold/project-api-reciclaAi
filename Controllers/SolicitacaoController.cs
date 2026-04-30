@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.Solicitacao;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/solicitacoes")]
+    [Route("/solicitação")]
     [ApiController]
     public class SolicitacaoController : ControllerBase
     {

@@ -7,20 +7,20 @@ namespace project_api_reciclaAi.DataContexts
     {
         public ReciclaAIContext(DbContextOptions<ReciclaAIContext> options) : base(options) { }
 
-        public DbSet<TipoUsuario> TiposUsuario { get; set; }
-        public DbSet<Endereco> Enderecos { get; set; }
-        public DbSet<TipoMaterial> TiposMaterial { get; set; }
-        public DbSet<Empresa> Empresas { get; set; }
-        public DbSet<EquipeColeta> EquipesColeta { get; set; }
-        public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<ClienteEndereco> ClientesEndereco { get; set; }
-        public DbSet<Catador> Catadores { get; set; }
-        public DbSet<Solicitacao> Solicitacoes { get; set; }
-        public DbSet<SolicitacaoTipoMaterial> SolicitacoesTipoMaterial { get; set; }
-        public DbSet<Foto> Fotos { get; set; }
-        public DbSet<Coleta> Coletas { get; set; }
-        public DbSet<Avaliacao> Avaliacoes { get; set; }
-        public DbSet<ColetaTipoMaterial> ColetasTipoMaterial { get; set; }
+        public DbSet<TipoUsuario> TipoUsuario { get; set; }
+        public DbSet<Endereco> Endereco { get; set; }
+        public DbSet<TipoMaterial> TipoMaterial { get; set; }
+        public DbSet<Empresa> Empresa { get; set; }
+        public DbSet<EquipeColeta> EquipeColeta { get; set; }
+        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<ClienteEndereco> ClienteEndereco { get; set; }
+        public DbSet<Catador> Catador { get; set; }
+        public DbSet<Solicitacao> Solicitacao { get; set; }
+        public DbSet<SolicitacaoTipoMaterial> SolicitacaoTipoMaterial { get; set; }
+        public DbSet<Foto> Foto { get; set; }
+        public DbSet<Coleta> Coleta { get; set; }
+        public DbSet<Avaliacao> Avaliacao { get; set; }
+        public DbSet<ColetaTipoMaterial> ColetaTipoMaterial { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,7 @@ namespace project_api_reciclaAi.DataContexts
 
             modelBuilder.Entity<TipoUsuario>(entity =>
             {
-                entity.ToTable("TipoUsuario");
+                entity.ToTable("Tipo_Usuario");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Nome)
@@ -56,7 +56,7 @@ namespace project_api_reciclaAi.DataContexts
 
             modelBuilder.Entity<TipoMaterial>(entity =>
             {
-                entity.ToTable("TipoMaterial");
+                entity.ToTable("Tipo_Material");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
@@ -82,21 +82,21 @@ namespace project_api_reciclaAi.DataContexts
                 entity.HasIndex(e => e.Cnpj).IsUnique();
 
                 entity.HasOne(e => e.TipoUsuario)
-                    .WithMany(t => t.Empresas)
+                    .WithMany(t => t.Empresa)
                     .HasForeignKey(e => e.TipoUsuarioId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<EquipeColeta>(entity =>
             {
-                entity.ToTable("EquipeColeta");
+                entity.ToTable("Equipe_Coleta");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
 
                 entity.HasOne(e => e.Empresa)
-                    .WithMany(emp => emp.EquipesColeta)
+                    .WithMany(emp => emp.EquipeColeta)
                     .HasForeignKey(e => e.EmpresaId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
@@ -119,23 +119,23 @@ namespace project_api_reciclaAi.DataContexts
                 entity.HasIndex(e => e.CpfCnpj).IsUnique();
 
                 entity.HasOne(e => e.TipoUsuario)
-                    .WithMany(t => t.Clientes)
+                    .WithMany(t => t.Cliente)
                     .HasForeignKey(e => e.TipoUsuarioId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<ClienteEndereco>(entity =>
             {
-                entity.ToTable("ClienteEndereco");
+                entity.ToTable("Cliente_Endereco");
                 entity.HasKey(e => e.Id);
 
                 entity.HasOne(e => e.Cliente)
-                    .WithMany(c => c.Enderecos)
+                    .WithMany(c => c.Endereco)
                     .HasForeignKey(e => e.ClienteId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(e => e.Endereco)
-                    .WithMany(end => end.ClientesEndereco)
+                    .WithMany(end => end.ClienteEndereco)
                     .HasForeignKey(e => e.EnderecoId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
@@ -156,12 +156,12 @@ namespace project_api_reciclaAi.DataContexts
                 entity.HasIndex(e => e.CpfCnpj).IsUnique();
 
                 entity.HasOne(e => e.TipoUsuario)
-                    .WithMany(t => t.Catadores)
+                    .WithMany(t => t.Catador)
                     .HasForeignKey(e => e.TipoUsuarioId)
                     .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(e => e.EquipeColeta)
-                    .WithMany(eq => eq.Catadores)
+                    .WithMany(eq => eq.Catador)
                     .HasForeignKey(e => e.EquipeColetaId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
@@ -179,25 +179,25 @@ namespace project_api_reciclaAi.DataContexts
                 entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
 
                 entity.HasOne(e => e.Cliente)
-                    .WithMany(c => c.Solicitacoes)
+                    .WithMany(c => c.Solicitacao)
                     .HasForeignKey(e => e.ClienteId)
                     .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(e => e.Endereco)
-                    .WithMany(end => end.Solicitacoes)
+                    .WithMany(end => end.Solicitacao)
                     .HasForeignKey(e => e.EnderecoId)
                     .OnDelete(DeleteBehavior.Restrict);
 
                 // Nullable — solicitação pode existir sem equipe ainda
                 entity.HasOne(e => e.EquipeColeta)
-                    .WithMany(eq => eq.Solicitacoes)
+                    .WithMany(eq => eq.Solicitacao)
                     .HasForeignKey(e => e.EquipeColetaId)
                     .IsRequired(false)
                     .OnDelete(DeleteBehavior.SetNull);
 
                 // Nullable — solicitação pode existir sem catador ainda
                 entity.HasOne(e => e.Catador)
-                    .WithMany(c => c.Solicitacoes)
+                    .WithMany(c => c.Solicitacao)
                     .HasForeignKey(e => e.CatadorId)
                     .IsRequired(false)
                     .OnDelete(DeleteBehavior.SetNull);
@@ -205,7 +205,7 @@ namespace project_api_reciclaAi.DataContexts
 
             modelBuilder.Entity<SolicitacaoTipoMaterial>(entity =>
             {
-                entity.ToTable("SolicitacaoTipoMaterial");
+                entity.ToTable("Solicitacao_Tipo_Material");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Quantidade)
@@ -213,12 +213,12 @@ namespace project_api_reciclaAi.DataContexts
                     .HasColumnType("DECIMAL(10,2)");
 
                 entity.HasOne(e => e.Solicitacao)
-                    .WithMany(s => s.TiposMaterial)
+                    .WithMany(s => s.TipoMaterial)
                     .HasForeignKey(e => e.SolicitacaoId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(e => e.TipoMaterial)
-                    .WithMany(t => t.SolicitacoesMaterial)
+                    .WithMany(t => t.SolicitacaoMaterial)
                     .HasForeignKey(e => e.TipoMaterialId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
@@ -231,7 +231,7 @@ namespace project_api_reciclaAi.DataContexts
                 entity.Property(e => e.Url).IsRequired().HasMaxLength(255);
 
                 entity.HasOne(e => e.Solicitacao)
-                    .WithMany(s => s.Fotos)
+                    .WithMany(s => s.Foto)
                     .HasForeignKey(e => e.SolicitacaoId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
@@ -250,7 +250,7 @@ namespace project_api_reciclaAi.DataContexts
                 entity.Property(e => e.HoraColeta).IsRequired();
 
                 entity.HasOne(e => e.Solicitacao)
-                    .WithMany(s => s.Coletas)
+                    .WithMany(s => s.Coleta)
                     .HasForeignKey(e => e.SolicitacaoId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
@@ -264,19 +264,19 @@ namespace project_api_reciclaAi.DataContexts
                 entity.Property(e => e.Observacao).HasColumnType("TEXT");
 
                 entity.HasOne(e => e.Coleta)
-                    .WithMany(c => c.Avaliacoes)
+                    .WithMany(c => c.Avaliacao)
                     .HasForeignKey(e => e.ColetaId)
                     .OnDelete(DeleteBehavior.Restrict);
 
                 entity.HasOne(e => e.Cliente)
-                    .WithMany(c => c.Avaliacoes)
+                    .WithMany(c => c.Avaliacao)
                     .HasForeignKey(e => e.ClienteId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<ColetaTipoMaterial>(entity =>
             {
-                entity.ToTable("ColetaTipoMaterial");
+                entity.ToTable("Coleta_Tipo_Material");
                 entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Quantidade)
@@ -284,12 +284,12 @@ namespace project_api_reciclaAi.DataContexts
                     .HasColumnType("DECIMAL(10,2)");
 
                 entity.HasOne(e => e.Coleta)
-                    .WithMany(c => c.TiposMaterial)
+                    .WithMany(c => c.TipoMaterial)
                     .HasForeignKey(e => e.ColetaId)
                     .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(e => e.TipoMaterial)
-                    .WithMany(t => t.ColetasMaterial)
+                    .WithMany(t => t.ColetaMaterial)
                     .HasForeignKey(e => e.TipoMaterialId)
                     .OnDelete(DeleteBehavior.Restrict);
             });

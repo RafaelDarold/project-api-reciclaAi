@@ -19,13 +19,13 @@ namespace project_api_reciclaAi.Services.TipoMaterial
 
         public async Task<List<TipoMaterialResponseDto>> GetAllAsync()
         {
-            var materiais = await _context.TiposMaterial.ToListAsync();
+            var materiais = await _context.TipoMaterial.ToListAsync();
             return _mapper.Map<List<TipoMaterialResponseDto>>(materiais);
         }
 
         public async Task<TipoMaterialResponseDto> GetByIdAsync(int id)
         {
-            var material = await _context.TiposMaterial.FindAsync(id)
+            var material = await _context.TipoMaterial.FindAsync(id)
                 ?? throw new NotFoundException($"Tipo de material com id {id} não encontrado.");
 
             return _mapper.Map<TipoMaterialResponseDto>(material);
@@ -37,7 +37,7 @@ namespace project_api_reciclaAi.Services.TipoMaterial
             material.CriadoEm = DateTime.UtcNow;
             material.AtualizadoEm = DateTime.UtcNow;
 
-            _context.TiposMaterial.Add(material);
+            _context.TipoMaterial.Add(material);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<TipoMaterialResponseDto>(material);
@@ -45,7 +45,7 @@ namespace project_api_reciclaAi.Services.TipoMaterial
 
         public async Task<TipoMaterialResponseDto> UpdateAsync(int id, TipoMaterialRequestDto dto)
         {
-            var material = await _context.TiposMaterial.FindAsync(id)
+            var material = await _context.TipoMaterial.FindAsync(id)
                 ?? throw new NotFoundException($"Tipo de material com id {id} não encontrado.");
 
             material.Nome = dto.Nome;
@@ -60,10 +60,10 @@ namespace project_api_reciclaAi.Services.TipoMaterial
 
         public async Task DeleteAsync(int id)
         {
-            var material = await _context.TiposMaterial.FindAsync(id)
+            var material = await _context.TipoMaterial.FindAsync(id)
                 ?? throw new NotFoundException($"Tipo de material com id {id} não encontrado.");
 
-            _context.TiposMaterial.Remove(material);
+            _context.TipoMaterial.Remove(material);
             await _context.SaveChangesAsync();
         }
     }

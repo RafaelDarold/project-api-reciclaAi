@@ -40,6 +40,6 @@ namespace project_api_reciclaAi.Models
         [ForeignKey(nameof(EquipeColetaId))]
         public virtual EquipeColeta? EquipeColeta { get; set; }
 
-        public virtual ICollection<Solicitacao> Solicitacoes { get; set; } = [];
+        public virtual ICollection<Solicitacao> Solicitacao { get; set; } = [];
     }
 }

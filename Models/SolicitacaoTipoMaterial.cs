@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_api_reciclaAi.Models
 {
-    [Table("SolicitacaoTipoMaterial")]
+    [Table("Solicitacao_Tipo_Material")]
     public class SolicitacaoTipoMaterial
     {
         [Key]

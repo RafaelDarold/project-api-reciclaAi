@@ -20,10 +20,10 @@ namespace project_api_reciclaAi.Services.Coleta
 
         private IQueryable<Models.Coleta> QueryComIncludes()
         {
-            return _context.Coletas
+            return _context.Coleta
                 .Include(c => c.Solicitacao).ThenInclude(s => s!.Cliente)
                 .Include(c => c.Solicitacao).ThenInclude(s => s!.Endereco)
-                .Include(c => c.TiposMaterial);
+                .Include(c => c.TipoMaterial);
         }
 
         public async Task<List<ColetaResponseDto>> GetAllAsync()
@@ -52,19 +52,19 @@ namespace project_api_reciclaAi.Services.Coleta
 
         public async Task<ColetaResponseDto> CreateAsync(ColetaRequestDto dto)
         {
-            var solicitacao = await _context.Solicitacoes.FindAsync(dto.SolicitacaoId)
+            var solicitacao = await _context.Solicitacao.FindAsync(dto.SolicitacaoId)
                 ?? throw new NotFoundException($"Solicitação com id {dto.SolicitacaoId} não encontrada.");
 
             if (solicitacao.Status != "em andamento")
                 throw new BusinessException("Só é possível criar uma coleta para solicitações em andamento.");
 
             var coleta = _mapper.Map<Models.Coleta>(dto);
-            _context.Coletas.Add(coleta);
+            _context.Coleta.Add(coleta);
             await _context.SaveChangesAsync();
 
             foreach (var material in dto.TiposMaterial)
             {
-                _context.ColetasTipoMaterial.Add(new ColetaTipoMaterial
+                _context.ColetaTipoMaterial.Add(new ColetaTipoMaterial
                 {
                     ColetaId = coleta.Id,
                     TipoMaterialId = material.TipoMaterialId,
@@ -78,8 +78,8 @@ namespace project_api_reciclaAi.Services.Coleta
 
         public async Task<ColetaResponseDto> FinalizarAsync(int id)
         {
-            var coleta = await _context.Coletas
-                .Include(c => c.TiposMaterial)
+            var coleta = await _context.Coleta
+                .Include(c => c.TipoMaterial)
                 .Include(c => c.Solicitacao)
                 .FirstOrDefaultAsync(c => c.Id == id)
                 ?? throw new NotFoundException($"Coleta com id {id} não encontrada.");
@@ -87,7 +87,7 @@ namespace project_api_reciclaAi.Services.Coleta
             if (coleta.Status == "finalizada")
                 throw new BusinessException("Esta coleta já foi finalizada.");
 
-            coleta.PesoTotal = coleta.TiposMaterial.Sum(t => t.Quantidade);
+            coleta.PesoTotal = coleta.TipoMaterial.Sum(t => t.Quantidade);
             coleta.Status = "finalizada";
             coleta.Solicitacao!.Status = "concluída";
 
@@ -98,13 +98,13 @@ namespace project_api_reciclaAi.Services.Coleta
 
         public async Task DeleteAsync(int id)
         {
-            var coleta = await _context.Coletas.FindAsync(id)
+            var coleta = await _context.Coleta.FindAsync(id)
                 ?? throw new NotFoundException($"Coleta com id {id} não encontrada.");
 
             if (coleta.Status == "finalizada")
                 throw new BusinessException("Não é possível excluir uma coleta já finalizada.");
 
-            _context.Coletas.Remove(coleta);
+            _context.Coleta.Remove(coleta);
             await _context.SaveChangesAsync();
         }
     }

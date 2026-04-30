@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_api_reciclaAi.Models
 {
-    [Table("ClienteEndereco")]
+    [Table("Cliente_Endereco")]
     public class ClienteEndereco
     {
         [Key]

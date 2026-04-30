@@ -8,7 +8,7 @@ namespace project_api_reciclaAi.Profiles
         public ClienteProfile()
         {
             CreateMap<ClienteRequestDto, Cliente>()
-                .ForMember(dest => dest.Enderecos, opt => opt.Ignore());
+                .ForMember(dest => dest.Endereco, opt => opt.Ignore());
 
             CreateMap<ClienteUpdateDto, Cliente>()
                 .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
@@ -16,7 +16,7 @@ namespace project_api_reciclaAi.Profiles
             CreateMap<Cliente, ClienteResponseDto>()
                 .ForMember(dest => dest.TipoUsuario, opt => opt.MapFrom(src => src.TipoUsuario))
                 .ForMember(dest => dest.Enderecos, opt => opt.MapFrom(src =>
-                    src.Enderecos.Select(e => e.Endereco).ToList()));
+                    src.Endereco.Select(e => e.Endereco).ToList()));
         }
     }
 }

@@ -40,10 +40,10 @@ namespace project_api_reciclaAi.Models
         [ForeignKey(nameof(TipoUsuarioId))]
         public virtual TipoUsuario? TipoUsuario { get; set; }
 
-        public virtual ICollection<ClienteEndereco> Enderecos { get; set; } = [];
+        public virtual ICollection<ClienteEndereco> Endereco { get; set; } = [];
 
-       public virtual ICollection<Solicitacao> Solicitacoes { get; set; } = [];
+       public virtual ICollection<Solicitacao> Solicitacao { get; set; } = [];
 
-       public virtual ICollection<Avaliacao> Avaliacoes { get; set; } = [];
+       public virtual ICollection<Avaliacao> Avaliacao { get; set; } = [];
     }
 }

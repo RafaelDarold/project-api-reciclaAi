@@ -19,7 +19,7 @@ namespace project_api_reciclaAi.Services.Catador
 
         public async Task<List<CatadorResponseDto>> GetAllAsync()
         {
-            var catadores = await _context.Catadores
+            var catadores = await _context.Catador
                 .Include(c => c.TipoUsuario)
                 .Include(c => c.EquipeColeta)
                     .ThenInclude(eq => eq!.Empresa)
@@ -30,7 +30,7 @@ namespace project_api_reciclaAi.Services.Catador
 
         public async Task<CatadorResponseDto> GetByIdAsync(int id)
         {
-            var catador = await _context.Catadores
+            var catador = await _context.Catador
                 .Include(c => c.TipoUsuario)
                 .Include(c => c.EquipeColeta)
                     .ThenInclude(eq => eq!.Empresa)
@@ -42,17 +42,17 @@ namespace project_api_reciclaAi.Services.Catador
 
         public async Task<CatadorResponseDto> CreateAsync(CatadorRequestDto dto)
         {
-            var emailExiste = await _context.Catadores
+            var emailExiste = await _context.Catador
                 .AnyAsync(c => c.Email == dto.Email);
             if (emailExiste)
                 throw new ConflictException("Já existe um catador cadastrado com este e-mail.");
 
-            var cpfExiste = await _context.Catadores
+            var cpfExiste = await _context.Catador
                 .AnyAsync(c => c.CpfCnpj == dto.CpfCnpj);
             if (cpfExiste)
                 throw new ConflictException("Já existe um catador cadastrado com este CPF.");
 
-            var equipeExiste = await _context.EquipesColeta
+            var equipeExiste = await _context.EquipeColeta
                 .AnyAsync(e => e.Id == dto.EquipeColetaId);
             if (!equipeExiste)
                 throw new NotFoundException($"Equipe de coleta com id {dto.EquipeColetaId} não encontrada.");
@@ -60,7 +60,7 @@ namespace project_api_reciclaAi.Services.Catador
             var catador = _mapper.Map<Models.Catador>(dto);
             catador.Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha);
 
-            _context.Catadores.Add(catador);
+            _context.Catador.Add(catador);
             await _context.SaveChangesAsync();
 
             return await GetByIdAsync(catador.Id);
@@ -68,10 +68,10 @@ namespace project_api_reciclaAi.Services.Catador
 
         public async Task DeleteAsync(int id)
         {
-            var catador = await _context.Catadores.FindAsync(id)
+            var catador = await _context.Catador.FindAsync(id)
                 ?? throw new NotFoundException($"Catador com id {id} não encontrado.");
 
-            _context.Catadores.Remove(catador);
+            _context.Catador.Remove(catador);
             await _context.SaveChangesAsync();
         }
     }
