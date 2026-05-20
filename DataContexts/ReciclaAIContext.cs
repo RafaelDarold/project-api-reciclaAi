@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using project_api_reciclaAi.Models;
 
 namespace project_api_reciclaAi.DataContexts
@@ -21,6 +21,8 @@ namespace project_api_reciclaAi.DataContexts
         public DbSet<Coleta> Coleta { get; set; }
         public DbSet<Avaliacao> Avaliacao { get; set; }
         public DbSet<ColetaTipoMaterial> ColetaTipoMaterial { get; set; }
+        public DbSet<ChaveAutenticacao> ChaveAutenticacao { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +39,22 @@ namespace project_api_reciclaAi.DataContexts
 
                 entity.Property(e => e.NivelAcesso)
                     .IsRequired();
+            });
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.ToTable("usuarios");
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Nome).IsRequired().HasMaxLength(150);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(150);
+                entity.Property(e => e.TipoPessoa).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.Perfil).IsRequired().HasMaxLength(30);
+                entity.Property(e => e.Ativo).IsRequired();
+                entity.Property(e => e.CriadoEm).IsRequired();
+                entity.Property(e => e.AtualizadoEm).IsRequired();
+
+                entity.HasIndex(e => e.Email).IsUnique();
             });
 
             modelBuilder.Entity<Endereco>(entity =>
@@ -188,14 +206,14 @@ namespace project_api_reciclaAi.DataContexts
                     .HasForeignKey(e => e.EnderecoId)
                     .OnDelete(DeleteBehavior.Restrict);
 
-                // Nullable — solicitação pode existir sem equipe ainda
+                // Nullable â€” solicitaÃ§Ã£o pode existir sem equipe ainda
                 entity.HasOne(e => e.EquipeColeta)
                     .WithMany(eq => eq.Solicitacao)
                     .HasForeignKey(e => e.EquipeColetaId)
                     .IsRequired(false)
                     .OnDelete(DeleteBehavior.SetNull);
 
-                // Nullable — solicitação pode existir sem catador ainda
+                // Nullable â€” solicitaÃ§Ã£o pode existir sem catador ainda
                 entity.HasOne(e => e.Catador)
                     .WithMany(c => c.Solicitacao)
                     .HasForeignKey(e => e.CatadorId)
@@ -292,6 +310,20 @@ namespace project_api_reciclaAi.DataContexts
                     .WithMany(t => t.ColetaMaterial)
                     .HasForeignKey(e => e.TipoMaterialId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<ChaveAutenticacao>(entity =>
+            {
+                entity.ToTable("Chave_Autenticacao");
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.ChaveHash).IsRequired().HasMaxLength(64);
+                entity.Property(e => e.UsuarioTipo).IsRequired().HasMaxLength(30);
+                entity.Property(e => e.UsuarioId).IsRequired();
+                entity.Property(e => e.CriadoEm).IsRequired();
+                entity.Property(e => e.ExpiraEm).IsRequired();
+
+                entity.HasIndex(e => e.ChaveHash).IsUnique();
+                entity.HasIndex(e => new { e.UsuarioTipo, e.UsuarioId });
             });
         }
     }

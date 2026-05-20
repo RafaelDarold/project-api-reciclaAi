@@ -30,6 +30,7 @@ namespace project_api_reciclaAi.Middlewares
             var statusCode = exception switch
             {
                 NotFoundException => HttpStatusCode.NotFound,
+                UnauthorizedException => HttpStatusCode.Unauthorized,
                 BusinessException => HttpStatusCode.UnprocessableEntity,
                 ConflictException => HttpStatusCode.Conflict,
                 _ => HttpStatusCode.InternalServerError
