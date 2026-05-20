@@ -14,6 +14,8 @@ using project_api_reciclaAi.Services.Catador;
 using project_api_reciclaAi.Services.Solicitacao;
 using project_api_reciclaAi.Services.Coleta;
 using project_api_reciclaAi.Services.Avaliacao;
+using project_api_reciclaAi.Services.Autenticacao;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,9 +38,35 @@ builder.Services.AddScoped<ICatadorService, CatadorService>();
 builder.Services.AddScoped<ISolicitacaoService, SolicitacaoService>();
 builder.Services.AddScoped<IColetaService, ColetaService>();
 builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
+builder.Services.AddScoped<IAutenticacaoService, AutenticacaoService>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition(ApiKeyMiddleware.HeaderName, new OpenApiSecurityScheme
+    {
+        Description = $"Informe a chave gerada pelo endpoint /autenticacao/gerar-chave no header {ApiKeyMiddleware.HeaderName}.",
+        Name = ApiKeyMiddleware.HeaderName,
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = ApiKeyMiddleware.HeaderName
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = ApiKeyMiddleware.HeaderName
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
 
@@ -50,6 +78,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
