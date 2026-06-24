@@ -29,10 +29,10 @@ namespace project_api_reciclaAi.Services.Solicitacao
                 .Include(s => s.TipoMaterial);
         }
 
-        public async Task<List<SolicitacaoResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<SolicitacaoResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var solicitacoes = await QueryComIncludes().ToListAsync();
-            return _mapper.Map<List<SolicitacaoResponseDto>>(solicitacoes);
+            return await QueryComIncludes()
+                .ToPaginatedResponseAsync<Models.Solicitacao, SolicitacaoResponseDto>(pagination, _mapper);
         }
 
         public async Task<SolicitacaoResponseDto> GetByIdAsync(int id)
@@ -44,17 +44,16 @@ namespace project_api_reciclaAi.Services.Solicitacao
             return _mapper.Map<SolicitacaoResponseDto>(solicitacao);
         }
 
-        public async Task<List<SolicitacaoResponseDto>> GetByClienteAsync(int clienteId)
+        public async Task<PaginatedResponseDto<SolicitacaoResponseDto>> GetByClienteAsync(int clienteId, PaginationQueryDto pagination)
         {
             var clienteExiste = await _context.Cliente.AnyAsync(c => c.Id == clienteId);
             if (!clienteExiste)
                 throw new NotFoundException($"Cliente com id {clienteId} não encontrado.");
 
-            var solicitacoes = await QueryComIncludes()
-                .Where(s => s.ClienteId == clienteId)
-                .ToListAsync();
+            var query = QueryComIncludes()
+                .Where(s => s.ClienteId == clienteId);
 
-            return _mapper.Map<List<SolicitacaoResponseDto>>(solicitacoes);
+            return await query.ToPaginatedResponseAsync<Models.Solicitacao, SolicitacaoResponseDto>(pagination, _mapper);
         }
 
         public async Task<SolicitacaoResponseDto> CreateAsync(SolicitacaoRequestDto dto)

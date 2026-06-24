@@ -24,10 +24,10 @@ namespace project_api_reciclaAi.Services.Avaliacao
                 .Include(a => a.Cliente);
         }
 
-        public async Task<List<AvaliacaoResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<AvaliacaoResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var avaliacoes = await QueryComIncludes().ToListAsync();
-            return _mapper.Map<List<AvaliacaoResponseDto>>(avaliacoes);
+            return await QueryComIncludes()
+                .ToPaginatedResponseAsync<Models.Avaliacao, AvaliacaoResponseDto>(pagination, _mapper);
         }
 
         public async Task<AvaliacaoResponseDto> GetByIdAsync(int id)
@@ -39,30 +39,28 @@ namespace project_api_reciclaAi.Services.Avaliacao
             return _mapper.Map<AvaliacaoResponseDto>(avaliacao);
         }
 
-        public async Task<List<AvaliacaoResponseDto>> GetByColetaAsync(int coletaId)
+        public async Task<PaginatedResponseDto<AvaliacaoResponseDto>> GetByColetaAsync(int coletaId, PaginationQueryDto pagination)
         {
             var coletaExiste = await _context.Coleta.AnyAsync(c => c.Id == coletaId);
             if (!coletaExiste)
                 throw new NotFoundException($"Coleta com id {coletaId} não encontrada.");
 
-            var avaliacoes = await QueryComIncludes()
-                .Where(a => a.ColetaId == coletaId)
-                .ToListAsync();
+            var query = QueryComIncludes()
+                .Where(a => a.ColetaId == coletaId);
 
-            return _mapper.Map<List<AvaliacaoResponseDto>>(avaliacoes);
+            return await query.ToPaginatedResponseAsync<Models.Avaliacao, AvaliacaoResponseDto>(pagination, _mapper);
         }
 
-        public async Task<List<AvaliacaoResponseDto>> GetByClienteAsync(int clienteId)
+        public async Task<PaginatedResponseDto<AvaliacaoResponseDto>> GetByClienteAsync(int clienteId, PaginationQueryDto pagination)
         {
             var clienteExiste = await _context.Cliente.AnyAsync(c => c.Id == clienteId);
             if (!clienteExiste)
                 throw new NotFoundException($"Cliente com id {clienteId} não encontrado.");
 
-            var avaliacoes = await QueryComIncludes()
-                .Where(a => a.ClienteId == clienteId)
-                .ToListAsync();
+            var query = QueryComIncludes()
+                .Where(a => a.ClienteId == clienteId);
 
-            return _mapper.Map<List<AvaliacaoResponseDto>>(avaliacoes);
+            return await query.ToPaginatedResponseAsync<Models.Avaliacao, AvaliacaoResponseDto>(pagination, _mapper);
         }
 
         public async Task<AvaliacaoResponseDto> CreateAsync(AvaliacaoRequestDto dto)

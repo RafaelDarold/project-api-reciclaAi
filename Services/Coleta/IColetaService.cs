@@ -4,7 +4,7 @@ namespace project_api_reciclaAi.Services.Coleta
 {
     public interface IColetaService
     {
-        Task<List<ColetaResponseDto>> GetAllAsync();
+        Task<PaginatedResponseDto<ColetaResponseDto>> GetAllAsync(PaginationQueryDto pagination);
         Task<ColetaResponseDto> GetByIdAsync(int id);
         Task<ColetaResponseDto> GetBySolicitacaoAsync(int solicitacaoId);
         Task<ColetaResponseDto> CreateAsync(ColetaRequestDto dto);

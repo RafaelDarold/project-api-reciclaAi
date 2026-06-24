@@ -17,16 +17,16 @@ namespace project_api_reciclaAi.Services.TipoUsuario
             _mapper = mapper;
         }
 
-        public async Task<List<TipoUsuarioResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<TipoUsuarioResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var tipos = await _context.TipoUsuario.ToListAsync();
-            return _mapper.Map<List<TipoUsuarioResponseDto>>(tipos);
+            return await _context.TipoUsuario
+                .ToPaginatedResponseAsync<Models.TipoUsuario, TipoUsuarioResponseDto>(pagination, _mapper);
         }
 
         public async Task<TipoUsuarioResponseDto> GetByIdAsync(int id)
         {
             var tipo = await _context.TipoUsuario.FindAsync(id)
-                ?? throw new NotFoundException($"Tipo de usu·rio com id {id} n„o encontrado.");
+                ?? throw new NotFoundException($"Tipo de usu√°rio com id {id} n√£o encontrado.");
 
             return _mapper.Map<TipoUsuarioResponseDto>(tipo);
         }

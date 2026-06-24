@@ -17,13 +17,12 @@ namespace project_api_reciclaAi.Services.EquipeColeta
             _mapper = mapper;
         }
 
-        public async Task<List<EquipeColetaResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<EquipeColetaResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var equipes = await _context.EquipeColeta
-                .Include(e => e.Empresa)
-                .ToListAsync();
+            var query = _context.EquipeColeta
+                .Include(e => e.Empresa);
 
-            return _mapper.Map<List<EquipeColetaResponseDto>>(equipes);
+            return await query.ToPaginatedResponseAsync<Models.EquipeColeta, EquipeColetaResponseDto>(pagination, _mapper);
         }
 
         public async Task<EquipeColetaResponseDto> GetByIdAsync(int id)
@@ -36,18 +35,17 @@ namespace project_api_reciclaAi.Services.EquipeColeta
             return _mapper.Map<EquipeColetaResponseDto>(equipe);
         }
 
-        public async Task<List<EquipeColetaResponseDto>> GetByEmpresaAsync(int empresaId)
+        public async Task<PaginatedResponseDto<EquipeColetaResponseDto>> GetByEmpresaAsync(int empresaId, PaginationQueryDto pagination)
         {
             var empresaExiste = await _context.Empresa.AnyAsync(e => e.Id == empresaId);
             if (!empresaExiste)
                 throw new NotFoundException($"Empresa com id {empresaId} não encontrada.");
 
-            var equipes = await _context.EquipeColeta
+            var query = _context.EquipeColeta
                 .Include(e => e.Empresa)
-                .Where(e => e.EmpresaId == empresaId)
-                .ToListAsync();
+                .Where(e => e.EmpresaId == empresaId);
 
-            return _mapper.Map<List<EquipeColetaResponseDto>>(equipes);
+            return await query.ToPaginatedResponseAsync<Models.EquipeColeta, EquipeColetaResponseDto>(pagination, _mapper);
         }
 
         public async Task<EquipeColetaResponseDto> CreateAsync(EquipeColetaRequestDto dto)

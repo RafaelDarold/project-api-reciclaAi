@@ -15,9 +15,9 @@ namespace project_api_reciclaAi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQueryDto pagination)
         {
-            var result = await _service.GetAllAsync();
+            var result = await _service.GetAllAsync(pagination);
             return Ok(result);
         }
 
@@ -29,16 +29,16 @@ namespace project_api_reciclaAi.Controllers
         }
 
         [HttpGet("coleta/{coletaId}")]
-        public async Task<IActionResult> GetByColeta(int coletaId)
+        public async Task<IActionResult> GetByColeta(int coletaId, [FromQuery] PaginationQueryDto pagination)
         {
-            var result = await _service.GetByColetaAsync(coletaId);
+            var result = await _service.GetByColetaAsync(coletaId, pagination);
             return Ok(result);
         }
 
         [HttpGet("cliente/{clienteId}")]
-        public async Task<IActionResult> GetByCliente(int clienteId)
+        public async Task<IActionResult> GetByCliente(int clienteId, [FromQuery] PaginationQueryDto pagination)
         {
-            var result = await _service.GetByClienteAsync(clienteId);
+            var result = await _service.GetByClienteAsync(clienteId, pagination);
             return Ok(result);
         }
 
