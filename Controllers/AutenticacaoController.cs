@@ -4,7 +4,7 @@ using project_api_reciclaAi.Services.Autenticacao;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/autenticacao")]
+    [Route("v1/autenticacao")]
     [ApiController]
     public class AutenticacaoController : ControllerBase
     {

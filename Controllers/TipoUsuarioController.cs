@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.TipoUsuario;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/tipo-usuario")]
+    [Route("v1/tipo-usuario")]
     [ApiController]
     public class TipoUsuarioController : ControllerBase
     {

@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.Catador;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/catador")]
+    [Route("v1/catador")]
     [ApiController]
     public class CatadorController : ControllerBase
     {

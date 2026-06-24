@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.Cliente;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/cliente")]
+    [Route("v1/cliente")]
     [ApiController]
     public class ClienteController : ControllerBase
     {
