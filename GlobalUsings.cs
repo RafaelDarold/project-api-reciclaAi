@@ -15,5 +15,7 @@ global using project_api_reciclaAi.Dtos.Solicitacao;
 global using project_api_reciclaAi.Dtos.Coleta;
 global using project_api_reciclaAi.Dtos.Avaliacao;
 global using project_api_reciclaAi.Dtos.Foto;
+global using project_api_reciclaAi.Dtos.Pagination;
+global using project_api_reciclaAi.Services.Common;
 global using System.Linq;
 global using BCrypt.Net;

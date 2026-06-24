@@ -26,10 +26,10 @@ namespace project_api_reciclaAi.Services.Coleta
                 .Include(c => c.TipoMaterial);
         }
 
-        public async Task<List<ColetaResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<ColetaResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var coletas = await QueryComIncludes().ToListAsync();
-            return _mapper.Map<List<ColetaResponseDto>>(coletas);
+            return await QueryComIncludes()
+                .ToPaginatedResponseAsync<Models.Coleta, ColetaResponseDto>(pagination, _mapper);
         }
 
         public async Task<ColetaResponseDto> GetByIdAsync(int id)

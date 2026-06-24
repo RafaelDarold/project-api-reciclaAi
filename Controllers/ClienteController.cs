@@ -15,9 +15,9 @@ namespace project_api_reciclaAi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQueryDto pagination)
         {
-            var result = await _service.GetAllAsync();
+            var result = await _service.GetAllAsync(pagination);
             return Ok(result);
         }
 

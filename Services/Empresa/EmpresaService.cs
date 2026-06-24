@@ -17,13 +17,12 @@ namespace project_api_reciclaAi.Services.Empresa
             _mapper = mapper;
         }
 
-        public async Task<List<EmpresaResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<EmpresaResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var empresas = await _context.Empresa
-                .Include(e => e.TipoUsuario)
-                .ToListAsync();
+            var query = _context.Empresa
+                .Include(e => e.TipoUsuario);
 
-            return _mapper.Map<List<EmpresaResponseDto>>(empresas);
+            return await query.ToPaginatedResponseAsync<Models.Empresa, EmpresaResponseDto>(pagination, _mapper);
         }
 
         public async Task<EmpresaResponseDto> GetByIdAsync(int id)

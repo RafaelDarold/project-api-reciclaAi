@@ -18,15 +18,14 @@ namespace project_api_reciclaAi.Services.Cliente
             _mapper = mapper;
         }
 
-        public async Task<List<ClienteResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<ClienteResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var clientes = await _context.Cliente
+            var query = _context.Cliente
                 .Include(c => c.TipoUsuario)
                 .Include(c => c.Endereco)
-                    .ThenInclude(ce => ce.Endereco)
-                .ToListAsync();
+                    .ThenInclude(ce => ce.Endereco);
 
-            return _mapper.Map<List<ClienteResponseDto>>(clientes);
+            return await query.ToPaginatedResponseAsync<Models.Cliente, ClienteResponseDto>(pagination, _mapper);
         }
 
         public async Task<ClienteResponseDto> GetByIdAsync(int id)

@@ -4,7 +4,7 @@ namespace project_api_reciclaAi.Services.TipoMaterial
 {
     public interface ITipoMaterialService
     {
-        Task<List<TipoMaterialResponseDto>> GetAllAsync();
+        Task<PaginatedResponseDto<TipoMaterialResponseDto>> GetAllAsync(PaginationQueryDto pagination);
         Task<TipoMaterialResponseDto> GetByIdAsync(int id);
         Task<TipoMaterialResponseDto> CreateAsync(TipoMaterialRequestDto dto);
         Task<TipoMaterialResponseDto> UpdateAsync(int id, TipoMaterialRequestDto dto);

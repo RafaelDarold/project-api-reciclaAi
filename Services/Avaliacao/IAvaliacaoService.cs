@@ -4,10 +4,10 @@ namespace project_api_reciclaAi.Services.Avaliacao
 {
     public interface IAvaliacaoService
     {
-        Task<List<AvaliacaoResponseDto>> GetAllAsync();
+        Task<PaginatedResponseDto<AvaliacaoResponseDto>> GetAllAsync(PaginationQueryDto pagination);
         Task<AvaliacaoResponseDto> GetByIdAsync(int id);
-        Task<List<AvaliacaoResponseDto>> GetByColetaAsync(int coletaId);
-        Task<List<AvaliacaoResponseDto>> GetByClienteAsync(int clienteId);
+        Task<PaginatedResponseDto<AvaliacaoResponseDto>> GetByColetaAsync(int coletaId, PaginationQueryDto pagination);
+        Task<PaginatedResponseDto<AvaliacaoResponseDto>> GetByClienteAsync(int clienteId, PaginationQueryDto pagination);
         Task<AvaliacaoResponseDto> CreateAsync(AvaliacaoRequestDto dto);
         Task DeleteAsync(int id);
     }

@@ -17,15 +17,14 @@ namespace project_api_reciclaAi.Services.Catador
             _mapper = mapper;
         }
 
-        public async Task<List<CatadorResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<CatadorResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var catadores = await _context.Catador
+            var query = _context.Catador
                 .Include(c => c.TipoUsuario)
                 .Include(c => c.EquipeColeta)
-                    .ThenInclude(eq => eq!.Empresa)
-                .ToListAsync();
+                    .ThenInclude(eq => eq!.Empresa);
 
-            return _mapper.Map<List<CatadorResponseDto>>(catadores);
+            return await query.ToPaginatedResponseAsync<Models.Catador, CatadorResponseDto>(pagination, _mapper);
         }
 
         public async Task<CatadorResponseDto> GetByIdAsync(int id)

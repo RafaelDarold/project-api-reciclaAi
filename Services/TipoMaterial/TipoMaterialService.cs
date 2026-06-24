@@ -17,16 +17,16 @@ namespace project_api_reciclaAi.Services.TipoMaterial
             _mapper = mapper;
         }
 
-        public async Task<List<TipoMaterialResponseDto>> GetAllAsync()
+        public async Task<PaginatedResponseDto<TipoMaterialResponseDto>> GetAllAsync(PaginationQueryDto pagination)
         {
-            var materiais = await _context.TipoMaterial.ToListAsync();
-            return _mapper.Map<List<TipoMaterialResponseDto>>(materiais);
+            return await _context.TipoMaterial
+                .ToPaginatedResponseAsync<Models.TipoMaterial, TipoMaterialResponseDto>(pagination, _mapper);
         }
 
         public async Task<TipoMaterialResponseDto> GetByIdAsync(int id)
         {
             var material = await _context.TipoMaterial.FindAsync(id)
-                ?? throw new NotFoundException($"Tipo de material com id {id} n„o encontrado.");
+                ?? throw new NotFoundException($"Tipo de material com id {id} n√£o encontrado.");
 
             return _mapper.Map<TipoMaterialResponseDto>(material);
         }
@@ -46,7 +46,7 @@ namespace project_api_reciclaAi.Services.TipoMaterial
         public async Task<TipoMaterialResponseDto> UpdateAsync(int id, TipoMaterialRequestDto dto)
         {
             var material = await _context.TipoMaterial.FindAsync(id)
-                ?? throw new NotFoundException($"Tipo de material com id {id} n„o encontrado.");
+                ?? throw new NotFoundException($"Tipo de material com id {id} n√£o encontrado.");
 
             material.Nome = dto.Nome;
             material.Descricao = dto.Descricao;
@@ -61,7 +61,7 @@ namespace project_api_reciclaAi.Services.TipoMaterial
         public async Task DeleteAsync(int id)
         {
             var material = await _context.TipoMaterial.FindAsync(id)
-                ?? throw new NotFoundException($"Tipo de material com id {id} n„o encontrado.");
+                ?? throw new NotFoundException($"Tipo de material com id {id} n√£o encontrado.");
 
             _context.TipoMaterial.Remove(material);
             await _context.SaveChangesAsync();
