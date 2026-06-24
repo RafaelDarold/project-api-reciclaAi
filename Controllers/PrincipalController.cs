@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/")]
+    [Route("v1")]
     [ApiController]
     public class PrincipalController : ControllerBase
     {

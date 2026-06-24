@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.EquipeColeta;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/equipe-coleta")]
+    [Route("v1/equipe-coleta")]
     [ApiController]
     public class EquipeColetaController : ControllerBase
     {

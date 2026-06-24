@@ -45,7 +45,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition(ApiKeyMiddleware.HeaderName, new OpenApiSecurityScheme
     {
-        Description = $"Informe a chave gerada pelo endpoint /autenticacao/gerar-chave no header {ApiKeyMiddleware.HeaderName}.",
+        Description = $"Informe a chave gerada pelo endpoint /v1/autenticacao/gerar-chave no header {ApiKeyMiddleware.HeaderName}.",
         Name = ApiKeyMiddleware.HeaderName,
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,

@@ -76,8 +76,8 @@ namespace project_api_reciclaAi.Middlewares
                 return true;
 
             var path = request.Path;
-            return path == "/" ||
-                   path.StartsWithSegments("/autenticacao") ||
+            return path == "/v1" ||
+                   path.StartsWithSegments("/v1/autenticacao") ||
                    path.StartsWithSegments("/swagger");
         }
 

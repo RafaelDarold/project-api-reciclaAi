@@ -3,7 +3,7 @@ using project_api_reciclaAi.Services.Avaliacao;
 
 namespace project_api_reciclaAi.Controllers
 {
-    [Route("/avaliação")]
+    [Route("v1/avaliação")]
     [ApiController]
     public class AvaliacaoController : ControllerBase
     {
